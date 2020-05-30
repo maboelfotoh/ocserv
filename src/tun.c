@@ -522,13 +522,13 @@ static int os_open_tun(main_server_st * s, struct proc_st *proc)
 	int unit_nr = 0;
 	struct stat st;
 
-	fd = open("/dev/tun", O_RDWR);
+	fd = open("/dev/tuns", O_RDWR);
 	if (fd == -1) {
 		/* try iterating */
 		e = errno;
-		mslog(s, NULL, LOG_DEBUG, "cannot open /dev/tun; falling back to iteration: %s", strerror(e));
+		mslog(s, NULL, LOG_DEBUG, "cannot open /dev/tuns; falling back to iteration: %s", strerror(e));
 		for (unit_nr = 0; unit_nr < 255; unit_nr++) {
-			snprintf(proc->tun_lease.name, sizeof(proc->tun_lease.name), "/dev/tun%d", unit_nr);
+			snprintf(proc->tun_lease.name, sizeof(proc->tun_lease.name), "/dev/tuns%d", unit_nr);
 			fd = open(proc->tun_lease.name, O_RDWR);
 #ifdef SIOCIFCREATE
 			if (fd == -1) {
@@ -642,10 +642,10 @@ static int os_open_tun(main_server_st * s, struct proc_st *proc)
 	}
 
 	/* Obtain a free tun device */
-	tunfd = open("/dev/net/tun", O_RDWR);
+	tunfd = open("/dev/net/tuns", O_RDWR);
 	if (tunfd < 0) {
 		int e = errno;
-		mslog(s, NULL, LOG_ERR, "Can't open /dev/net/tun: %s\n",
+		mslog(s, NULL, LOG_ERR, "Can't open /dev/net/tuns: %s\n",
 		      strerror(e));
 		return -1;
 	}
